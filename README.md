@@ -2,7 +2,7 @@
 
 > 🇹🇷 **Türkçe için aşağıya kaydırın / Scroll down for Turkish**
 
-**Tweet-Temizleme** is a swipeable tweet deleter mobile app that helps you clean up your Twitter/X timeline. It connects to a browser extension on your PC to sync your tweets and lets you swipe left to delete or right to keep them.
+**Tweet-Temizleme** is a swipeable tweet deleter mobile app that helps you clean up your Twitter/X profile. It connects to a browser extension on your PC to sync your tweets and lets you swipe left to delete or right to keep them.
 
 ## ✨ Features
 
