@@ -4,8 +4,6 @@
 
 **Tweet-Temizleme** is a swipeable tweet deleter mobile app that helps you clean up your Twitter/X timeline. It connects to a browser extension on your PC to sync your tweets and lets you swipe left to delete or right to keep them.
 
-![App Screenshot](https://via.placeholder.com/800x400?text=Tweet-Temizleme+Preview)
-
 ## ✨ Features
 
 - **Swipe Interface**: Swipe left to delete, swipe right to keep.
