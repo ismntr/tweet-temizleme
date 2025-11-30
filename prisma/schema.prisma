@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Tweet {
+  id        String   @id // Twitter ID is a string
+  content   String
+  createdAt DateTime @default(now())
+  status    String   @default("PENDING") // PENDING, KEPT, DELETED
+
+  // New fields for UI richness
+  authorName   String?
+  authorHandle String?
+  avatar       String?
+  likes        String?
+  retweets     String?
+  threadParent String? // Content of the parent tweet
+  threadChild  String? // Content of the child tweet
+  media        String? // JSON string of media URLs
+  isRetweet    Boolean @default(false)
+}
+
+model Session {
+  id                   Int     @id @default(autoincrement())
+  lastProcessedTweetId String?
+  scrollPosition       Int     @default(0)
+}

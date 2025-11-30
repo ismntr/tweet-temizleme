@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TweetPurge Sync
 
-## Getting Started
+TweetPurge Sync, Twitter/X geçmişinizi temizlemenize yardımcı olan, yerel ağ üzerinde çalışan bir araçtır. Tinder benzeri bir mobil arayüz ile tweetlerinizi "Sakla" (Sağa Kaydır) veya "Sil" (Sola Kaydır) olarak işaretleyebilirsiniz.
 
-First, run the development server:
+## Özellikler
+
+- **Yerel Ağ Senkronizasyonu:** Bilgisayarınızdaki Chrome eklentisi ile telefonunuzdaki mobil arayüz anlık olarak haberleşir.
+- **Tinder Tarzı Arayüz:** Tweetleri hızlıca elemek için kaydırma mantığı.
+- **Otomatik Silme:** Sola kaydırdığınız tweetler, Chrome eklentisi aracılığıyla tarayıcınızda otomatik olarak silinir.
+- **Veri Güvenliği:** Tüm veriler yerel bilgisayarınızda (SQLite) tutulur, dışarıya veri gönderilmez.
+- **Kaldığı Yerden Devam:** Uygulamayı kapatsanız bile kaldığınız yerden devam edebilirsiniz.
+
+## Kurulum
+
+### Gereksinimler
+
+- Node.js (v18 veya üzeri)
+- Google Chrome Tarayıcısı
+
+### 1. Projeyi İndirin ve Bağımlılıkları Yükleyin
+
+Terminali açın ve proje dizininde şu komutu çalıştırın:
+
+```bash
+npm install
+```
+
+### 2. Veritabanını Hazırlayın
+
+Prisma ile SQLite veritabanını oluşturun:
+
+```bash
+npx prisma generate
+npx prisma migrate dev --name init
+```
+
+### 3. Sunucuyu Başlatın
+
+Uygulamayı yerel ağda erişilebilir şekilde başlatmak için:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sunucu `http://0.0.0.0:3000` adresinde çalışmaya başlayacaktır.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Kullanım
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Adım 1: Chrome Eklentisini Yükleyin
 
-## Learn More
+1. Google Chrome'u açın ve adres çubuğuna `chrome://extensions` yazın.
+2. Sağ üst köşedeki **Geliştirici modu** (Developer mode) seçeneğini aktif hale getirin.
+3. **Paketlenmemiş öğe yükle** (Load unpacked) butonuna tıklayın.
+4. Proje klasörünün içindeki `extension` klasörünü seçin.
 
-To learn more about Next.js, take a look at the following resources:
+### Adım 2: Mobil Uygulamayı Açın
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Bilgisayarınızın yerel IP adresini bulun (Mac'te `ipconfig getifaddr en0`, Windows'ta `ipconfig`).
+2. Telefonunuzun tarayıcısından `http://<BILGISAYAR_IP_ADRESI>:3000` adresine gidin.
+3. Ekranda "Disconnected" (Kırmızı) yazısını göreceksiniz.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Adım 3: Temizliğe Başlayın
 
-## Deploy on Vercel
+1. Bilgisayarınızda Chrome üzerinden Twitter/X profilinize (veya Tweetler sekmesine) gidin.
+2. Eklenti otomatik olarak tweetleri taramaya başlayacak ve telefonunuza gönderecektir.
+3. Telefonunuzda beliren kartları:
+   - **Sağa Kaydır:** Tweeti SAKLA (Veritabanına kaydedilir, silinmez).
+   - **Sola Kaydır:** Tweeti SİL (Chrome eklentisine silme komutu gönderilir).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Teknoloji Yığını
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Frontend:** Next.js 14, Tailwind CSS, Framer Motion
+- **Backend:** Node.js (Custom Server), Socket.io
+- **Veritabanı:** SQLite, Prisma
+- **Eklenti:** Chrome Extension Manifest V3
+
+## Notlar
+
+- Twitter arayüzü değiştikçe eklentinin DOM seçicilerinin güncellenmesi gerekebilir.
+- Silme işlemi, bot algılamasını önlemek için küçük gecikmelerle yapılır.

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      width: 200px;
+      padding: 10px;
+      font-family: sans-serif;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>TweetPurge</h3>
+  <div id="controls" style="margin-top: 10px; display: flex; gap: 10px;">
+    <button id="btn-start"
+      style="background: green; color: white; border: none; padding: 5px 10px; cursor: pointer;">START</button>
+    <button id="btn-stop"
+      style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">STOP</button>
+    <button id="btn-reset"
+      style="background: gray; color: white; border: none; padding: 5px 10px; cursor: pointer;">RESET</button>
+  </div>
+  <div id="status" class="status" style="margin-top: 10px;">Status: Idle</div>
+  <div id="qr-container" style="text-align: center; margin-top: 15px; min-height: 150px;">
+    <div style="color: #666; font-size: 12px;">Waiting for Server IP...</div>
+  </div>
+  <div id="debug" style="margin-top:10px; border-top:1px solid #ccc; padding-top:5px;"></div>
+  <script src="socket.io.js"></script>
+  <script src="qrious.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>

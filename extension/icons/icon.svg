@@ -1,0 +1,31 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#000000"/>
+  
+  <!-- X Logo -->
+  <path d="M38.5 35H52.5L82.5 78H68.5L38.5 35Z" fill="white"/>
+  <path d="M78.5 35H92.5L62.5 78H48.5L78.5 35Z" fill="white"/>
+  <path d="M35 35L93 118" stroke="white" stroke-width="8" stroke-linecap="round" stroke-opacity="0.1"/>
+  
+  <!-- Refined X Shape -->
+  <path d="M42 38L86 98" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M86 38L42 98" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  
+  <!-- Tinder Swipe Elements -->
+  <!-- Green Heart (Right) -->
+  <circle cx="100" cy="64" r="18" fill="#10B981" fill-opacity="0.2"/>
+  <path d="M100 72.5C100 72.5 108 65 108 59.5C108 56.5 105.5 54 102.5 54C100.5 54 99.5 55 99.5 55C99.5 55 98.5 54 96.5 54C93.5 54 91 56.5 91 59.5C91 65 100 72.5 100 72.5Z" fill="#10B981"/>
+  
+  <!-- Red Cross (Left) -->
+  <circle cx="28" cy="64" r="18" fill="#EF4444" fill-opacity="0.2"/>
+  <path d="M23 59L33 69M33 59L23 69" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Swipe Motion Trail -->
+  <path d="M40 105C55 115 75 115 90 105" stroke="url(#paint0_linear)" stroke-width="4" stroke-linecap="round"/>
+  
+  <defs>
+    <linearGradient id="paint0_linear" x1="40" y1="110" x2="90" y2="110" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EF4444"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+</svg>
