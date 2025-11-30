@@ -26,6 +26,13 @@ model Tweet {
   threadChild  String? // Content of the child tweet
   media        String? // JSON string of media URLs
   isRetweet    Boolean @default(false)
+  
+  // Link Card Data
+  replyCount      String?
+  cardTitle       String?
+  cardDescription String?
+  cardDomain      String?
+  cardImage       String?
 }
 
 model Session {

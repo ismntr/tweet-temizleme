@@ -1,4 +1,14 @@
-console.log("TweetPurge Content Script Loaded");
+console.log("Tweet-Temizleme Content Script Loaded");
+
+function remoteLog(msg) {
+    console.log(msg);
+    try {
+        chrome.runtime.sendMessage({ type: "LOG", message: msg });
+    } catch (e) {
+        // ignore
+    }
+}
+
 
 // --- Control Logic ---
 let scrapingInterval = null;
@@ -93,8 +103,11 @@ function extractTweetData(article) {
     // Extract Metrics
     const likeBtn = article.querySelector("[data-testid='like']");
     const retweetBtn = article.querySelector("[data-testid='retweet']");
+    const replyBtn = article.querySelector("[data-testid='reply']");
+
     const likes = likeBtn ? likeBtn.getAttribute("aria-label")?.match(/\d+/)?.[0] || "0" : "0";
     const retweets = retweetBtn ? retweetBtn.getAttribute("aria-label")?.match(/\d+/)?.[0] || "0" : "0";
+    const replyCount = replyBtn ? replyBtn.getAttribute("aria-label")?.match(/\d+/)?.[0] || "0" : "0";
 
     // Extract Media
     const media = [];
@@ -123,6 +136,36 @@ function extractTweetData(article) {
         }
     }
 
+    // Extract Link Card
+    let cardTitle = null;
+    let cardDescription = null;
+    let cardDomain = null;
+    let cardImage = null;
+
+    const cardWrapper = article.querySelector("[data-testid='card.wrapper']");
+    if (cardWrapper) {
+        // Try to find image
+        const img = cardWrapper.querySelector("img");
+        if (img) cardImage = img.src;
+
+        // Try to find text content
+        // This structure varies, so we try a few selectors
+        const textNodes = Array.from(cardWrapper.querySelectorAll("span"));
+        // Usually domain is small gray text, title is bold
+        // Simple heuristic:
+        if (textNodes.length > 0) {
+            // Often the last one is the domain or the first one is the domain depending on layout
+            // Let's try to find the domain (usually contains '.')
+            const domainNode = textNodes.find(n => n.innerText.includes(".") && n.innerText.length < 30);
+            if (domainNode) cardDomain = domainNode.innerText;
+
+            // Title is usually the longest text or the one with specific styling
+            // For now, let's grab the first non-domain text as title
+            const titleNode = textNodes.find(n => n !== domainNode && n.innerText.length > 0);
+            if (titleNode) cardTitle = titleNode.innerText;
+        }
+    }
+
     return {
         id,
         content,
@@ -133,13 +176,20 @@ function extractTweetData(article) {
         avatar,
         likes,
         retweets,
+        replyCount,
         media,
-        isRetweet
+        isRetweet,
+        cardTitle,
+        cardDescription,
+        cardDomain,
+        cardImage
     };
 }
 
 function scrapeTweets() {
+    remoteLog("Scraping started...");
     const articles = Array.from(document.querySelectorAll("article[data-testid='tweet']"));
+    remoteLog(`Found ${articles.length} articles`);
     const tweets = [];
 
     // Get logged-in user handle - Robust Strategy
@@ -188,9 +238,9 @@ function scrapeTweets() {
     }
 
     if (myHandle) {
-        console.log("Detected current user:", myHandle);
+        remoteLog(`Detected current user: ${myHandle}`);
     } else {
-        console.warn("Could not detect current user handle. Filtering disabled.");
+        remoteLog("Could not detect current user handle. Filtering disabled (but strict check will fail).");
     }
 
     articles.forEach((article, index) => {
@@ -219,6 +269,7 @@ function scrapeTweets() {
             }
 
             if (!shouldInclude) {
+                // remoteLog(`Skipping tweet ${tweetData.id} (Author: ${tweetData.authorHandle}, Me: ${myHandle}, Retweet: ${tweetData.isRetweet})`);
                 return;
             }
 

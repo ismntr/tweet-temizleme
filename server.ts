@@ -70,6 +70,11 @@ app.prepare().then(() => {
             }
         });
 
+        // Handle remote logs
+        socket.on("LOG", (msg) => {
+            console.log(`[EXT LOG]: ${msg}`);
+        });
+
         // Handle scraped tweets from Extension
         socket.on("SCRAPED_TWEETS", async (tweets: any[]) => {
             console.log(`Received ${tweets.length} tweets from extension`);
@@ -97,7 +102,12 @@ app.prepare().then(() => {
                                 threadParent: t.threadParent,
                                 threadChild: t.threadChild,
                                 media: t.media ? JSON.stringify(t.media) : null,
-                                isRetweet: t.isRetweet || false
+                                isRetweet: t.isRetweet || false,
+                                replyCount: t.replyCount,
+                                cardTitle: t.cardTitle,
+                                cardDescription: t.cardDescription,
+                                cardDomain: t.cardDomain,
+                                cardImage: t.cardImage
                             }
                         });
                         newTweets.push(t);

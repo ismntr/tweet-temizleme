@@ -53,6 +53,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             }
         });
         sendResponse({ success: true });
+    } else if (message.type === "LOG") {
+        if (socket.connected) {
+            socket.emit("LOG", message.message);
+        }
     }
     return true; // Keep channel open for async response if needed
 });
